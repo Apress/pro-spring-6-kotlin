@@ -1,0 +1,56 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+}
+
+description 'Chapter 09: Spring Transaction Management!'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework:spring-orm:6.0.6'
+    implementation 'org.springframework:spring-context:6.0.6'
+
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+
+    implementation "com.zaxxer:HikariCP:$hikariVersion"
+    implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+    implementation "org.hibernate.orm:hibernate-core:$hibernateVersion"
+
+    testImplementation 'org.springframework:spring-test:6.0.6'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation "org.testcontainers:mariadb:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+}
+
+
+task jar(type: Jar, overwrite: true) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE  /*  Gradle Fat jars with multiple dependencies are affected by the same bug: https://issues.apache.org/jira/browse/MASSEMBLY-360 this statement fixes it */
+    manifest {
+        attributes(
+                "Created-By": "Iuliana Cosmina",
+                "Specification-Title": "Pro Spring 6 - Chapter 09",
+                "Main-Class": "com.apress.prospring6.nine.Chapter9Demo",
+                "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' ')
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}

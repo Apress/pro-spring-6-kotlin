@@ -1,0 +1,49 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.springframework.boot' version '3.0.5'
+}
+apply plugin: 'io.spring.dependency-management'
+
+description 'Chapter 20'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.10'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation "org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE"
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.mariadb:r2dbc-mariadb:1.1.4'
+    implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test:3.5.6'
+    testImplementation "org.testcontainers:mariadb:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.apress.prospring6.twenty.boot.Chapter20Application'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}

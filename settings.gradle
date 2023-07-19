@@ -1,0 +1,36 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2" }
+        maven { url "https://repo.spring.io/release" }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/libs-snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://repo.spring.io/libs-milestone-local" }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'pro-spring-6-kt'
+include 'chapter02', 'chapter03', 'chapter04', 'chapter04-boot',
+        'chapter05', 'chapter05-boot', 'chapter06', 'chapter06-boot',
+        'chapter07', 'chapter07-boot', 'chapter07-jooq', 'chapter07-jooq-boot',
+        'chapter08', 'chapter08-boot',
+        'chapter09', 'chapter09-boot',
+        'chapter10', 'chapter10-boot', 'chapter10-mongo', 'chapter10-mongo-boot',
+        'chapter11', 'chapter11-boot',
+        'chapter12',
+        'chapter13-artemis-boot', 'chapter13-kafka-boot', 'chapter13-sender-boot',
+        'chapter14', 'chapter14-boot',
+        'chapter15', 'chapter15-boot',
+        'chapter16-graphql-boot', 'chapter16-native-boot',
+        'chapter17', 'chapter17-boot',
+        'chapter18', 'chapter18-boot',
+        'chapter19', 'chapter19-boot',
+        'chapter20-boot'
+
+
+println(' This project is a collection of simple code samples. It is meant to be used together with the ' +
+        '"Pro Spring 6 (Kotlin)"  book' +
+        ' published by Apress in order to learn and practice Spring.')

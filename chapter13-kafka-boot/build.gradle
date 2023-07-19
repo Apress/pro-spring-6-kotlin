@@ -1,0 +1,32 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.springframework.boot' version '3.0.5'
+}
+apply plugin: 'io.spring.dependency-management'
+
+description 'Chapter 13 Boot: Kafka Remoting'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.kafka:spring-kafka:3.0.5'
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test:3.0.5'
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.apress.prospring6.thirteen.KafkaApplication'
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

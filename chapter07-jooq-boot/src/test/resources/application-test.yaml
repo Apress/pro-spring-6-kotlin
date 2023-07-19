@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: "jdbc:tc:mariadb:latest:///testdb?allowMultiQueries=true&TC_TMPFS=/var/lib/mysql:rw&TC_REUSABLE=true"
+
+# Logging config
+logging:
+  pattern:
+    console: " %-5level: %class{0} - %msg%n"
+  level:
+    root: INFO
+    org.springframework.boot: DEBUG
+    com.apress.prospring6.seven: DEBUG
+    org.jooq: TRACE
+    org.testcontainers: TRACE
+
+

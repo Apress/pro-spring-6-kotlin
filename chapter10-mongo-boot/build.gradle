@@ -1,0 +1,35 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.springframework.boot' version '3.0.5'
+}
+apply plugin: 'io.spring.dependency-management'
+
+description 'Chapter 10: Boot Spring-Data Mongo'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.10'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation "org.mongodb:mongodb-driver-sync:$mongoVersion"
+
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.testcontainers:mongodb:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.apress.prospring6.ten.boot.Mongo10Application'
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

@@ -1,0 +1,50 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.springframework.boot' version '3.0.5'
+}
+apply plugin: 'io.spring.dependency-management'
+
+description 'Chapter 14 Boot:  Spring MVC Thymeleaf'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    runtimeOnly 'org.jetbrains.kotlin:kotlin-reflect:1.8.10'
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+    implementation "com.zaxxer:HikariCP:$hikariVersion"
+    implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+
+    implementation "commons-io:commons-io:2.11.0"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.testcontainers:mariadb:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.apress.prospring6.fourteen.boot.Chapter14Application'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}

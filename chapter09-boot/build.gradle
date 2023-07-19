@@ -1,0 +1,37 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.springframework.boot' version '3.0.5'
+}
+apply plugin: 'io.spring.dependency-management'
+
+description 'Chapter 09: Boot Spring Transaction Management!'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework:spring-orm:6.0.6'
+
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+    implementation "com.zaxxer:HikariCP:$hikariVersion"
+    implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+    implementation "org.hibernate.orm:hibernate-core:$hibernateVersion"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.testcontainers:mariadb:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.apress.prospring6.nine.boot.Chapter9Application'
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

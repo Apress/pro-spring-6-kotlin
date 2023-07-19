@@ -1,0 +1,42 @@
+== Apress Source Code
+
+This repository accompanies [*Pro Spring 6 with Kotlin*](https://link.springer.com/book/10.1007/978-1-4842-9557-1) by Iuliana Cosmina, Rob Harrop, Chris Schaefer, and Peter Späth (Apress, 2023).
+image::978-1-4842-9556-4.jpg[Cover image]
+
+Download the files as a zip using the green button, or clone the repository to your machine using Git.
+
+
+=== Releases
+
+This archive belongs to the Kotlin variant of the book.
+
+*Release v6.0* corresponds to the code in the second edition of the published book, without corrections or updates.
+This project was built successfully with *JDK 17*, Gradle *7.3.3*. The syntax is specific to Kotlin versions up to and including 1.8.10.
+
+
+=== Building and Deploying
+
+==== Using Gradle
+
+The project is configured with the following default Gradle tasks:
+----
+defaultTasks 'clean', 'build'
+----
+This means that you do not have to specify those tasks when building the project from the terminal. Build it from scratch using the Gradle wrapper:
+----
+./gradlew
+----
+Or if you have Gradle installed locally, open a terminal and just run:
+----
+gradle
+----
+If you want to skip the tests run the wrapper with the following arguments:
+----
+./gradlew -x test
+----
+Or run Gradle with the following arguments
+----
+gradle -x test
+----
+
+

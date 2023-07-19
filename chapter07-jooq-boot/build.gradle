@@ -1,0 +1,96 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'nu.studer.jooq' version '7.1.1'
+    id 'java'
+}
+apply plugin: 'io.spring.dependency-management'
+
+description 'Chapter 07: Spring Hibernate and jOOQ with Boot!'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+
+// Telling Gradle explicitly that src/main/generated contains sources -->
+sourceSets.main.java.srcDirs = ['src/main/generated']
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //implementation 'org.springframework:spring-orm:6.0.6'
+
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+    implementation "com.zaxxer:HikariCP:$hikariVersion"
+    implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+    implementation "org.hibernate.orm:hibernate-core:$hibernateVersion"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "org.testcontainers:mariadb:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+
+    jooqGenerator "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+}
+
+jooq {
+    version = "$jooqVersion"
+    configurations {
+        main {
+            // include task dependency from compileJava to generateJooq
+            generateSchemaSourceOnCompilation = true
+
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.mariadb.jdbc.Driver'
+                    url = 'jdbc:mariadb://localhost:3306/musicdb'
+                    user = 'prospring6'
+                    password = 'prospring6'
+                }
+                generator {
+                    name = 'org.jooq.codegen.JavaGenerator'
+                    database {
+                        name = 'org.jooq.meta.mariadb.MariaDBDatabase'
+                        inputSchema = 'musicdb'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'com.apress.prospring6.seven.jooq.generated'
+                        directory = 'src/main/generated'
+                    }
+                    generate {
+                        pojos = true
+                        pojosToString = true
+                        daos = true
+                    }
+                }
+            }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    jvmArgs = ["--add-opens", "java.base/java.lang=ALL-UNNAMED"]
+    systemProperties([
+            // Configuration parameters to execute top-level classes in parallel but methods in same thread
+            'junit.jupiter.execution.parallel.enabled': 'false',
+            'junit.jupiter.execution.parallel.mode.default': 'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default': 'concurrent',
+            ])
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.apress.prospring6.seven.Chapter7JooqApplication'
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

@@ -1,0 +1,36 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'org.springframework.boot' version '3.0.5'
+}
+apply plugin: 'io.spring.dependency-management'
+
+description 'Chapter 13 Boot: Artemis Remoting'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext['artemis.version'] = '2.27.1'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-artemis'
+    implementation 'org.springframework.boot:spring-boot-starter-json'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
+    implementation 'org.apache.activemq:artemis-jakarta-server:2.27.1'
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.apache.activemq:artemis-junit:2.27.1'
+}
+
+bootJar {
+    manifest {
+        attributes 'Start-Class': 'com.apress.prospring6.thirteen.ArtemisApplication'
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

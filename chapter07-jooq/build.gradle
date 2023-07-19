@@ -1,0 +1,108 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.8.10'
+    id 'nu.studer.jooq' version '7.1.1'
+    id 'java'
+}
+/*plugins {
+    id 'nu.studer.jooq' version '7.1.1'
+    id 'java'
+}*/
+
+description 'Chapter 07: Spring Hibernate and jOOQ!'
+group = 'com.apress.prospring6'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+
+// Telling Gradle explicitly that src/main/generated contains sources too -->
+sourceSets.main.java.srcDirs = ['src/main/generated']
+
+dependencies {
+    implementation 'org.springframework:spring-context:6.0.6'
+    implementation 'org.springframework:spring-orm:6.0.6'
+
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion"
+
+    implementation "com.zaxxer:HikariCP:$hikariVersion"
+    implementation "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+    implementation "org.hibernate.orm:hibernate-core:$hibernateVersion"
+
+    implementation "org.jooq:jooq-codegen:$jooqVersion"
+
+    testImplementation 'org.springframework:spring-test:6.0.6'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation "org.testcontainers:mariadb:$testcontainersVersion"
+    testImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+
+    jooqGenerator "org.mariadb.jdbc:mariadb-java-client:$mariadbClientVersion"
+}
+
+jooq {
+    version = "$jooqVersion"
+
+    configurations {
+        main {
+            // omit task dependency from compileJava to generateJooq
+            generateSchemaSourceOnCompilation = true
+
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.mariadb.jdbc.Driver'
+                    url = 'jdbc:mariadb://localhost:3306/musicdb'
+                    user = 'prospring6'
+                    password = 'prospring6'
+                }
+                generator {
+                    name = 'org.jooq.codegen.JavaGenerator'
+                    database {
+                        name = 'org.jooq.meta.mariadb.MariaDBDatabase'
+                        inputSchema = 'musicdb'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'com.apress.prospring6.seven.jooq.generated'
+                        directory = 'src/main/generated'
+                    }
+                    generate {
+                        pojos = true
+                        pojosToString = true
+                        daos = true
+                    }
+                }
+            }
+        }
+    }
+}
+
+task jar(type: Jar, overwrite: true) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE  /*  Gradle Fat jars with multiple dependencies are affected by the same bug: https://issues.apache.org/jira/browse/MASSEMBLY-360 this statement fixes it */
+    manifest {
+        attributes(
+                "Created-By": "Iuliana Cosmina",
+                "Specification-Title": "Pro Spring 6 - Chapter 7",
+                "Main-Class": "com.apress.prospring6.seven.util.GenerateJOOQSources"
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '1.8'
+}
+
