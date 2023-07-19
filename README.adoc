@@ -1,7 +1,9 @@
 == Apress Source Code
 
-This repository accompanies [*Pro Spring 6 with Kotlin*](https://link.springer.com/book/10.1007/978-1-4842-9557-1) by Iuliana Cosmina, Rob Harrop, Chris Schaefer, and Peter Späth (Apress, 2023).
-image::978-1-4842-9556-4.jpg[Cover image]
+his repository accompanies [*Pro Spring 6 with Kotlin*](https://link.springer.com/book/10.1007/978-1-4842-9557-1) by Peter Späth, Iuliana Cosmina, Rob Harrop, and Chris Schaefer (Apress, 2023).
+
+[comment]: #cover
+![Cover image](978-1-4842-9556-4.jpg)
 
 Download the files as a zip using the green button, or clone the repository to your machine using Git.
 
